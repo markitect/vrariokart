@@ -15,6 +15,8 @@ public class Pointer : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
+        if (Application.isMobilePlatform)
+            TrackedNode = XRNode.CenterEye;
         this.transform.position = Camera.main.transform.position;
         pointerLine = GetComponent<LineRenderer>();
         pointerLine.startColor = Color.red;
