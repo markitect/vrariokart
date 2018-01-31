@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using UnityEngine.XR.WSA.Input;
+// using UnityEngine.XR.WSA.Input;
 
 [RequireComponent(typeof(LineRenderer))]
 public class Pointer : MonoBehaviour {
@@ -16,6 +16,8 @@ public class Pointer : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
+        if (Application.isMobilePlatform)
+            TrackedNode = XRNode.CenterEye;
         this.transform.position = Camera.main.transform.position;
         pointerLine = GetComponent<LineRenderer>();
         pointerLine.startColor = Color.red;
