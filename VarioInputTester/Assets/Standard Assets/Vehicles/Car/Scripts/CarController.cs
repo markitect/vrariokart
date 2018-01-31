@@ -10,6 +10,14 @@ namespace UnityStandardAssets.Vehicles.Car
         FourWheelDrive
     }
 
+    internal enum KartEngineSize
+    {
+        Fifty = 0,
+        OneHundred = 1,
+        OneFifty = 2,
+        TwoFifty = 3
+    }
+
     internal enum SpeedType
     {
         MPH,
@@ -19,6 +27,7 @@ namespace UnityStandardAssets.Vehicles.Car
     public class CarController : MonoBehaviour
     {
         [SerializeField] private CarDriveType m_CarDriveType = CarDriveType.FourWheelDrive;
+        [SerializeField] private KartEngineSize m_KartEngineSize = KartEngineSize.TwoFifty;
         [SerializeField] private WheelCollider[] m_WheelColliders = new WheelCollider[4];
         [SerializeField] private GameObject[] m_WheelMeshes = new GameObject[4];
         [SerializeField] private WheelEffects[] m_WheelEffects = new WheelEffects[4];
@@ -31,8 +40,8 @@ namespace UnityStandardAssets.Vehicles.Car
         [SerializeField] private float m_MaxHandbrakeTorque;
         [SerializeField] private float m_Downforce = 100f;
         [SerializeField] private SpeedType m_SpeedType;
-        [SerializeField] private float m_Topspeed = 200;
-        [SerializeField] private static int NoOfGears = 5;
+        [SerializeField] public float m_Topspeed = 50f;
+        [SerializeField] private static int NoOfGears = 7;
         [SerializeField] private float m_RevRangeBoundary = 1f;
         [SerializeField] private float m_SlipLimit;
         [SerializeField] private float m_BrakeTorque;
@@ -56,8 +65,10 @@ namespace UnityStandardAssets.Vehicles.Car
         public float AccelInput { get; private set; }
 
         // Use this for initialization
-        private void Start()
+        private void Awake()
         {
+            ControlTopSpeed();
+            
             m_WheelMeshLocalRotations = new Quaternion[4];
             for (int i = 0; i < 4; i++)
             {
@@ -161,6 +172,12 @@ namespace UnityStandardAssets.Vehicles.Car
                 m_WheelColliders[2].brakeTorque = hbTorque;
                 m_WheelColliders[3].brakeTorque = hbTorque;
             }
+            else
+            {
+                var hbTorque = 0;
+                m_WheelColliders[2].brakeTorque = hbTorque;
+                m_WheelColliders[3].brakeTorque = hbTorque;
+            }
 
             CalculateRevs();
             GearChanging();
@@ -191,10 +208,29 @@ namespace UnityStandardAssets.Vehicles.Car
             }
         }
 
+        public void ControlTopSpeed()
+        {
+            switch (m_KartEngineSize)
+            {
+                case KartEngineSize.Fifty:
+                    break;
+
+                case KartEngineSize.OneHundred:
+                    m_Topspeed = m_Topspeed * 2.5f;
+                    break;
+
+                case KartEngineSize.OneFifty:
+                    m_Topspeed = m_Topspeed * 3f;
+                    break;
+
+                case KartEngineSize.TwoFifty:
+                    m_Topspeed = m_Topspeed * 3.5f;
+                    break;
+            }
+        }
 
         private void ApplyDrive(float accel, float footbrake)
         {
-
             float thrustTorque;
             switch (m_CarDriveType)
             {
@@ -226,8 +262,8 @@ namespace UnityStandardAssets.Vehicles.Car
                 }
                 else if (footbrake > 0)
                 {
-                    m_WheelColliders[i].brakeTorque = m_BrakeTorque * footbrake;
-                    m_WheelColliders[i].motorTorque = -m_ReverseTorque * footbrake;
+                    m_WheelColliders[i].brakeTorque = m_BrakeTorque / footbrake;
+                    m_WheelColliders[i].motorTorque = -m_ReverseTorque / footbrake;
                 }
             }
         }
@@ -240,7 +276,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 WheelHit wheelhit;
                 m_WheelColliders[i].GetGroundHit(out wheelhit);
                 if (wheelhit.normal == Vector3.zero)
-                    return; // wheels arent on the ground so dont realign the rigidbody velocity
+                    return; // wheels are not on the ground so dont realign the rigidbody velocity
             }
 
             // this if is needed to avoid gimbal lock problems that will make the car suddenly shift direction
@@ -275,13 +311,13 @@ namespace UnityStandardAssets.Vehicles.Car
                 WheelHit wheelHit;
                 m_WheelColliders[i].GetGroundHit(out wheelHit);
 
-                // is the tire slipping above the given threshhold
+                // is the tire slipping above the given threshold
                 if (Mathf.Abs(wheelHit.forwardSlip) >= m_SlipLimit || Mathf.Abs(wheelHit.sidewaysSlip) >= m_SlipLimit)
                 {
                     m_WheelEffects[i].EmitTyreSmoke();
 
                     // avoiding all four tires screeching at the same time
-                    // if they do it can lead to some strange audio artefacts
+                    // if they do it can lead to some strange audio artifacts
                     if (!AnySkidSoundPlaying())
                     {
                         m_WheelEffects[i].PlayAudio();
@@ -289,7 +325,7 @@ namespace UnityStandardAssets.Vehicles.Car
                     continue;
                 }
 
-                // if it wasnt slipping stop all the audio
+                // if it wasn't slipping stop all the audio
                 if (m_WheelEffects[i].PlayingAudio)
                 {
                     m_WheelEffects[i].StopAudio();
