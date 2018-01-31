@@ -391,22 +391,22 @@ Prefab:
     - target: {fileID: 82095788410789542, guid: afdb0fe686f500d43ac4be504921c280,
         type: 2}
       propertyPath: Mute
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 82847432015181132, guid: afdb0fe686f500d43ac4be504921c280,
         type: 2}
       propertyPath: Mute
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 82032564902025124, guid: afdb0fe686f500d43ac4be504921c280,
         type: 2}
       propertyPath: Mute
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 82276381863598280, guid: afdb0fe686f500d43ac4be504921c280,
         type: 2}
       propertyPath: Mute
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114498258893780386, guid: afdb0fe686f500d43ac4be504921c280,
         type: 2}
