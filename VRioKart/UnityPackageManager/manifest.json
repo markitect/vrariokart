@@ -1,4 +1,6 @@
 {
 	"dependencies": {
+		"com.unity.render-pipelines.lightweight" : "0.1.21",
+		"com.unity.shadergraph" : "0.1.9"
 	}
 }
