@@ -15,6 +15,7 @@ namespace UnityStandardAssets.Vehicles.Car
         public Text m_SpeedData;
         public Text m_GearData;
         public Text m_DebugData;
+        public GameObject m_SteeringWheel;
         public CarController m_Car;
         public AutoCarGears m_AutoGear;
         public ManualCarGears m_ManGear;
@@ -54,6 +55,11 @@ namespace UnityStandardAssets.Vehicles.Car
             Six = 7
         }
 
+        void Awake()
+        {
+            ConfigureCameraHeight(true);
+        }
+
         private void Start()
         {
             // get the car controller
@@ -72,7 +78,6 @@ namespace UnityStandardAssets.Vehicles.Car
             gearSpeed = 0f;
 
             SetGearSpeeds();
-            ConfigureCameraHeight(true);
         }
 
 
@@ -101,14 +106,18 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             if (enabled)
             {
+                var camPos = Camera.main.transform.position;
                 XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
-                InputTracking.disablePositionalTracking = true;
+
+                Camera.main.transform.position = camPos;
             }
         }
         public void KeyboardControl()
         {
-            SteeringCar();
+            steering = Input.GetAxis("Horizontal");
             gas = Input.GetAxis("Vertical");
+
+            m_SteeringWheel.transform.localRotation = new Quaternion(25f, steering, 0f, 0f);
 
             if (gas > 0)
             {
@@ -127,6 +136,8 @@ namespace UnityStandardAssets.Vehicles.Car
             steering = Input.GetAxis("Horizontal");
             gas = Input.GetAxis("XboxGas");
             brake = Input.GetAxis("XboxBrake");
+
+            m_SteeringWheel.transform.localRotation = new Quaternion(steering, 0f, 0f, 0f);
 
             if (gas > 0)
             {
@@ -149,7 +160,8 @@ namespace UnityStandardAssets.Vehicles.Car
 
         public void SteeringCar()
         {
-            steering = Input.GetAxis("Horizontal");
+            steering = Input.GetAxis("Steering Wheel");
+            m_SteeringWheel.transform.localRotation = new Quaternion(steering, 0f, 0f, 0f);
         }
 
         public void Braking()
