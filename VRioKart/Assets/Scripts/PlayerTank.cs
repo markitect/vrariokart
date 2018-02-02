@@ -27,5 +27,6 @@ public class PlayerTank : MonoBehaviour
         thrust = Input.GetAxis("Vertical");
         rigidBody.transform.RotateAround(rigidBody.transform.up, turn);
 		rigidBody.transform.Translate(Vector3.forward * thrust);
+        
 	}
 }
