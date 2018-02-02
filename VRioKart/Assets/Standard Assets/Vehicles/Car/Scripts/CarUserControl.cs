@@ -163,7 +163,7 @@ namespace UnityStandardAssets.Vehicles.Car
             steering = Input.GetAxis("Steering Wheel");
             if (m_SteeringWheel != null)
             {
-                m_SteeringWheel.transform.localRotation = new Quaternion(steering, 0f, 0f, 0f);
+                m_SteeringWheel.transform.localRotation = new Quaternion(steering, 25f, 0f, 0f);
             }
         }
 
