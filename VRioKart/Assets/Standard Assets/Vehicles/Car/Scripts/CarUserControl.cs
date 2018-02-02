@@ -109,7 +109,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 var camPos = Camera.main.transform.position;
                 XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
 
-                Camera.main.transform.position = camPos;
+                //Camera.main.transform.position = camPos;
             }
         }
         public void KeyboardControl()
