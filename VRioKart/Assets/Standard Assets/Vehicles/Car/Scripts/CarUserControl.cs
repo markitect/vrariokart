@@ -8,17 +8,18 @@ using UnityEngine.XR;
 
 namespace UnityStandardAssets.Vehicles.Car
 {
-    [RequireComponent(typeof (CarController))]
+    [RequireComponent(typeof(CarController))]
 
     public class CarUserControl : MonoBehaviour
     {
         public Text m_SpeedData;
         public Text m_GearData;
         public Text m_DebugData;
+        public GameObject m_SteeringWheel;
         public CarController m_Car;
         public AutoCarGears m_AutoGear;
         public ManualCarGears m_ManGear;
-        public string m_CurrentGear; 
+        public string m_CurrentGear;
 
         private float gas = 0f;
         private float steering = 0f;
@@ -54,11 +55,16 @@ namespace UnityStandardAssets.Vehicles.Car
             Six = 7
         }
 
-        private void Start()
+        void Awake()
         {
+            ConfigureCameraHeight(true);
+
             // get the car controller
             m_Car = GetComponent<CarController>();
-            
+        }
+
+        private void Start()
+        {
             if (m_AutomaticTransmission)
             {
                 m_AutoGear = AutoCarGears.Drive;
@@ -72,7 +78,6 @@ namespace UnityStandardAssets.Vehicles.Car
             gearSpeed = 0f;
 
             SetGearSpeeds();
-            ConfigureCameraHeight(true);
         }
 
 
@@ -83,7 +88,7 @@ namespace UnityStandardAssets.Vehicles.Car
             {
                 LogitechControl();
             }
-            if(m_UseKeyboard)
+            if (m_UseKeyboard)
             {
                 KeyboardControl();
             }
@@ -101,14 +106,18 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             if (enabled)
             {
+                var camPos = Camera.main.transform.position;
                 XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
-                InputTracking.disablePositionalTracking = true;
+
+                //Camera.main.transform.position = camPos;
             }
         }
         public void KeyboardControl()
         {
-            SteeringCar();
+            steering = Input.GetAxis("Horizontal");
             gas = Input.GetAxis("Vertical");
+
+            m_SteeringWheel.transform.localRotation = new Quaternion(25f, steering, 0f, 0f);
 
             if (gas > 0)
             {
@@ -128,6 +137,8 @@ namespace UnityStandardAssets.Vehicles.Car
             gas = Input.GetAxis("XboxGas");
             brake = Input.GetAxis("XboxBrake");
 
+            m_SteeringWheel.transform.localRotation = new Quaternion(steering, 0f, 0f, 0f);
+
             if (gas > 0)
             {
                 m_CurrentGear = "Drive";
@@ -144,12 +155,16 @@ namespace UnityStandardAssets.Vehicles.Car
             DriveDirection();
             Braking();
             Clutching();
-            GearSwitching();        
+            GearSwitching();
         }
 
         public void SteeringCar()
         {
-            steering = Input.GetAxis("Horizontal");
+            steering = Input.GetAxis("Steering Wheel");
+            if (m_SteeringWheel != null)
+            {
+                m_SteeringWheel.transform.localRotation = new Quaternion(steering, 25f, 0f, 0f);
+            }
         }
 
         public void Braking()
@@ -163,19 +178,22 @@ namespace UnityStandardAssets.Vehicles.Car
 
         public void Clutching()
         {
-            clutch = Input.GetAxis("Clutch") * 0.5f;
-            var normlizeClutch = clutch + 0.5f;
-            clutch = normlizeClutch;
-
-            if (clutch > 0)
+            if (m_ManualTransmission)
             {
-                if (gas > 0)
+                clutch = Input.GetAxis("Clutch") * 0.5f;
+                var normlizeClutch = clutch + 0.5f;
+                clutch = normlizeClutch;
+
+                if (clutch > 0)
                 {
-                    gas = gas - clutch;
-                }
-                else if (gas < 0)
-                {
-                    gas = gas + clutch;
+                    if (gas > 0)
+                    {
+                        gas = gas - clutch;
+                    }
+                    else if (gas < 0)
+                    {
+                        gas = 0;
+                    }
                 }
             }
         }
@@ -227,12 +245,12 @@ namespace UnityStandardAssets.Vehicles.Car
             {
                 if (m_AutomaticTransmission)
                 {
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (Input.GetKeyDown(KeyCode.JoystickButton4))
                     {
                         m_AutoGear = AutoCarGears.Drive;
                     }
 
-                    if (Input.GetKeyDown(KeyCode.Q))
+                    if (Input.GetKeyDown(KeyCode.JoystickButton5))
                     {
                         m_AutoGear = AutoCarGears.Reverse;
                     }
@@ -339,7 +357,7 @@ namespace UnityStandardAssets.Vehicles.Car
                                line + "brake - " + brake +
                                line + "clutch - " + clutch +
                                line + "steering - " + steering +
-                               line + "hand brake - " + handBrake + 
+                               line + "hand brake - " + handBrake +
                                line + "Top Speed - " + m_Topspeed;
         }
     }
