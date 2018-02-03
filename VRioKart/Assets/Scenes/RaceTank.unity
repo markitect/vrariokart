@@ -114,28 +114,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: e970e57143f704a1c88d46cdf0786b89, type: 2}
---- !u!1 &68105265 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1847101693858906, guid: afdb0fe686f500d43ac4be504921c280,
-    type: 2}
-  m_PrefabInternal: {fileID: 278533199}
---- !u!114 &68105267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 68105265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b448041ae0d337408ba314d5e6af5bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Checkpoints:
-  - {fileID: 1890219132}
-  - {fileID: 891254001}
-  - {fileID: 1744678970}
-  - {fileID: 1020501400}
-  lapsToWin: 1
 --- !u!1 &232067037
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,28 +218,26 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114709957916237198, guid: afdb0fe686f500d43ac4be504921c280,
+    - target: {fileID: 114979398577107026, guid: afdb0fe686f500d43ac4be504921c280,
         type: 2}
-      propertyPath: m_UseRacingWheel
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114709957916237198, guid: afdb0fe686f500d43ac4be504921c280,
+      propertyPath: Checkpoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 1890219132}
+    - target: {fileID: 114979398577107026, guid: afdb0fe686f500d43ac4be504921c280,
         type: 2}
-      propertyPath: m_UseKeyboard
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1094493950080358, guid: afdb0fe686f500d43ac4be504921c280, type: 2}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 1847101693858906, guid: afdb0fe686f500d43ac4be504921c280, type: 2}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4985683774209174, guid: afdb0fe686f500d43ac4be504921c280, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 250
-      objectReference: {fileID: 0}
+      propertyPath: Checkpoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 891254001}
+    - target: {fileID: 114979398577107026, guid: afdb0fe686f500d43ac4be504921c280,
+        type: 2}
+      propertyPath: Checkpoints.Array.data[2]
+      value: 
+      objectReference: {fileID: 1744678970}
+    - target: {fileID: 114979398577107026, guid: afdb0fe686f500d43ac4be504921c280,
+        type: 2}
+      propertyPath: Checkpoints.Array.data[3]
+      value: 
+      objectReference: {fileID: 1020501400}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: afdb0fe686f500d43ac4be504921c280, type: 2}
   m_IsPrefabParent: 0
