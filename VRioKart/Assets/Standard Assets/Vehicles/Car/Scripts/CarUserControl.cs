@@ -119,6 +119,7 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             steering = Input.GetAxis("Horizontal");
             gas = Input.GetAxis("Vertical");
+
             if (m_SteeringWheel != null)
             {
                 m_SteeringWheel.transform.localRotation = new Quaternion(25f, steering, 0f, 0f);
