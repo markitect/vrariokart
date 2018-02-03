@@ -48,7 +48,6 @@ public class CheckpointTracker : MonoBehaviour
                 Checkpoints[currentCheckpoint + 1].GetComponent<CheckPoint>().UpdateCheckpoint();       //Update next Checkpoint
                 Checkpoints[currentCheckpoint].GetComponent<CheckPoint>().UpdateCheckpoint();           //Update current Checkpoint
                 currentCheckpoint++;
-                
             }
             else
             {

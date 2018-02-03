@@ -11,6 +11,10 @@ public class CheckPoint : MonoBehaviour
     public AudioSource m_checkpointSound;
     public Renderer m_finishLine;
 	// Use this for initialization
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 	void Awake ()
     {
         m_rend = GetComponent<Renderer>();
@@ -30,9 +34,9 @@ public class CheckPoint : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            if (other.gameObject.transform.parent.GetComponent<CheckpointTracker>())
+            if (other.transform.GetComponentInParent<CheckpointTracker>())
             {
-                other.gameObject.transform.parent.GetComponent<CheckpointTracker>().CheckpointFunction(gameObject);
+                other.transform.GetComponentInParent<CheckpointTracker > ().CheckpointFunction(gameObject);
             }
         }
     }
@@ -67,6 +71,7 @@ public class CheckPoint : MonoBehaviour
 
     private void SetupFinishline()
     {
+        Debug.Log("setup finish line");
         m_finishLine.enabled = true;
     }
 }
