@@ -106,10 +106,13 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             if (enabled)
             {
-                var camPos = Camera.main.transform.position;
-                XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
+                var camPos = GameObject.Find("CameraPositonHolder");
+                var trackingType = XRDevice.GetTrackingSpaceType();
 
-                //Camera.main.transform.position = camPos;
+                if (trackingType != TrackingSpaceType.Stationary)
+                {
+                    XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
+                }
             }
         }
         public void KeyboardControl()
