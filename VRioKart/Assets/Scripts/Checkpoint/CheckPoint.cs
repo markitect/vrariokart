@@ -10,7 +10,7 @@ public class CheckPoint : MonoBehaviour
     Renderer rend;
     public AudioSource m_checkpointSound;
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         rend = GetComponent<Renderer>();
     }
@@ -28,9 +28,9 @@ public class CheckPoint : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            if (other.gameObject.GetComponent<CheckpointTracker>())
+            if (other.gameObject.transform.parent.GetComponent<CheckpointTracker>())
             {
-                other.gameObject.GetComponent<CheckpointTracker>().CheckpointFunction(gameObject);
+                other.gameObject.transform.parent.GetComponent<CheckpointTracker>().CheckpointFunction(gameObject);
             }
         }
     }

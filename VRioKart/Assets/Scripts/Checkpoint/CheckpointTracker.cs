@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CheckpointTracker : MonoBehaviour
 {
@@ -10,14 +12,28 @@ public class CheckpointTracker : MonoBehaviour
     static public int currentLap = 1;
     public int lapsToWin = 1;
 
+    public Dictionary<int, float> timeSplits = new Dictionary<int, float>();
+    public List<float> LapTimes = new List<float>();
+
+    public float startTime;
+
+    public GameObject LapInfoUI;
+
 	// Use this for initialization
 	void Start ()
     {
         Checkpoints[0].GetComponent<CheckPoint>().UpdateCheckpoint(); //activate the first checkpoint
-        Debug.Log("Lap " + currentLap);
+        startTime = Time.time;
     }
     // Update is called once per frame
-    void Update (){}
+    void Update ()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine(LapInfo());
+        sb.AppendLine(SplitInfo());
+
+        LapInfoUI.GetComponent<Text>().text = sb.ToString();
+    }
 
     public void CheckpointFunction(GameObject obj)
     {
@@ -36,6 +52,20 @@ public class CheckpointTracker : MonoBehaviour
                 currentCheckpoint = 0;
                 UpdateLaps();
             }
+
+            var endTime = Time.time;
+            var currentCheckpointTime = endTime - startTime;
+            if(timeSplits.ContainsKey(currentCheckpoint))
+            {
+                timeSplits[currentCheckpoint] = currentCheckpointTime;
+            }
+            else
+            {
+                timeSplits.Add(currentCheckpoint, currentCheckpointTime);
+            }
+
+            Debug.LogFormat("Checkpoint {0}: Time: {1}", currentCheckpoint, currentCheckpointTime);
+            startTime = Time.time;
 
             if (currentLap == lapsToWin && CompareCheckpoint(obj))
             {
@@ -78,5 +108,25 @@ public class CheckpointTracker : MonoBehaviour
     void LoseRace()
     {
         //To be implemented after there are other people in the race.
+    }
+
+    string LapInfo()
+    {
+        return string.Format("Lap: {0}", currentLap);
+    }
+
+    string SplitInfo()
+    {
+        var sb = new StringBuilder();
+
+        foreach (var splitInfo in this.timeSplits)
+        {
+            if (splitInfo.Value != 0)
+            {
+                sb.AppendLine(string.Format("Checkpoint {0}: {1}s", splitInfo.Key, splitInfo.Value));
+            }
+        }
+
+        return sb.ToString();
     }
 }

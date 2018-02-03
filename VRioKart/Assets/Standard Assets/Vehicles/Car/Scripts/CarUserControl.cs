@@ -116,8 +116,10 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             steering = Input.GetAxis("Horizontal");
             gas = Input.GetAxis("Vertical");
-
-            m_SteeringWheel.transform.localRotation = new Quaternion(25f, steering, 0f, 0f);
+            if (m_SteeringWheel != null)
+            {
+                m_SteeringWheel.transform.localRotation = new Quaternion(25f, steering, 0f, 0f);
+            }
 
             if (gas > 0)
             {
@@ -137,7 +139,10 @@ namespace UnityStandardAssets.Vehicles.Car
             gas = Input.GetAxis("XboxGas");
             brake = Input.GetAxis("XboxBrake");
 
-            m_SteeringWheel.transform.localRotation = new Quaternion(steering, 0f, 0f, 0f);
+            if (m_SteeringWheel != null)
+            {
+                m_SteeringWheel.transform.localRotation = new Quaternion(25f, steering, 0f, 0f);
+            }
 
             if (gas > 0)
             {
