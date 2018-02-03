@@ -25,9 +25,14 @@ public class CheckpointTracker : MonoBehaviour
         {
             if (currentCheckpoint != Checkpoints.Count -1)//if current checkpoint is not the last checkpoint
             {
+                if (currentLap == lapsToWin && currentCheckpoint +1 == Checkpoints.Count - 1)//if coming to last checkpoint of last lap
+                {
+                    Checkpoints[currentCheckpoint + 1].GetComponent<CheckPoint>().m_isFinishLine = true;//turn on the finish line.
+                }
                 Checkpoints[currentCheckpoint + 1].GetComponent<CheckPoint>().UpdateCheckpoint();       //Update next Checkpoint
                 Checkpoints[currentCheckpoint].GetComponent<CheckPoint>().UpdateCheckpoint();           //Update current Checkpoint
                 currentCheckpoint++;
+                
             }
             else
             {
@@ -35,12 +40,6 @@ public class CheckpointTracker : MonoBehaviour
                 Checkpoints[currentCheckpoint].GetComponent<CheckPoint>().UpdateCheckpoint();           //Update current Checkpoint
                 currentCheckpoint = 0;
                 UpdateLaps();
-            }
-
-            if (currentLap == lapsToWin && CompareCheckpoint(obj))
-            {
-                obj.GetComponent<CheckPoint>().m_isFinishLine = true;
-                obj.GetComponent<CheckPoint>().UpdateCheckpoint();
             }
         }
     }
