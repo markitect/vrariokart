@@ -7,20 +7,22 @@ public class CheckPoint : MonoBehaviour
 {
     bool m_active = false;
     public bool m_isFinishLine = false;
-    Renderer rend;
+    Renderer m_rend;
     public AudioSource m_checkpointSound;
+    public Renderer m_finishLine;
 	// Use this for initialization
 	void Start ()
     {
-        rend = GetComponent<Renderer>();
+        m_rend = GetComponent<Renderer>();
+        m_finishLine.enabled = false;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if(m_active && rend.enabled == false)
+        if(m_active && m_rend.enabled == false)
         {
-            rend.enabled = true;
+            m_rend.enabled = true;
         }
     }
 
@@ -38,8 +40,10 @@ public class CheckPoint : MonoBehaviour
     {
         if (m_isFinishLine) //if player is on last checkpoint of last lap then
         {
+            Debug.Log("finishline set true");
             SetupFinishline();
         }
+
         if (m_active)//turn off if active
         {
             if (m_checkpointSound)
@@ -47,14 +51,14 @@ public class CheckPoint : MonoBehaviour
                 m_checkpointSound.Play(); //fire off audio (Queue dramatic voice saying "Checkpoint!" or something.)
             }
             m_active = false;
-            rend.enabled = false; //turn off collider mesh renderer
+            m_rend.enabled = false; //turn off collider mesh renderer
             //do particle effects maybe
             //update minimap maybe
         }
         else //turn on if inactive
         {
             m_active = true;
-            rend.enabled = true; //turn on collider mesh renderer
+            m_rend.enabled = true; //turn on collider mesh renderer
             //update minimap maybe
         }
 
@@ -63,6 +67,6 @@ public class CheckPoint : MonoBehaviour
 
     private void SetupFinishline()
     {
-        throw new NotImplementedException();
+        m_finishLine.enabled = true;
     }
 }
