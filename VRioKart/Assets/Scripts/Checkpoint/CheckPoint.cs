@@ -11,10 +11,6 @@ public class CheckPoint : MonoBehaviour
     public AudioSource m_checkpointSound;
     public Renderer m_finishLine;
 	// Use this for initialization
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 	void Awake ()
     {
         m_rend = GetComponent<Renderer>();
